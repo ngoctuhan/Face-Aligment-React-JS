@@ -5,23 +5,24 @@ import * as tf from '@tensorflow/tfjs';
 import * as facemesh from '@tensorflow-models/face-landmarks-detection';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { check_angel_face, check_mouth_activate } from "./utils";
+import { ReactMic } from "react-mic";
 function App() {
 
   // save state/value of element
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-
   const [capturing, setCapturing] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
   const mediaRecorderRef = React.useRef(null);
-
+ 
   let count_empty = 0;
   let count_frame = 0;
   let count_cheat = 0;
   let count_over  = 0;
   let status_recording = 0;
 
+  // --------------VIDEO CAPTURE----------------------------------------------
   const handleStartCaptureClick = React.useCallback(() => {
     console.log("dang quay lại video");
     setCapturing(true);
@@ -66,11 +67,14 @@ function App() {
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
+  // ----------------------------------------------------------------------------
 
+  //_----------------------------------------------------------------------------
   //  Load posenet
   const runFacemesh = async () => {
    
     const net = await facemesh.load(facemesh.SupportedPackages.mediapipeFacemesh);
+   
     setInterval(() => {
       detect(net);
     }, 10);
@@ -205,6 +209,7 @@ function App() {
           }}
         />
 
+       
       </header>
     </div>
   );
